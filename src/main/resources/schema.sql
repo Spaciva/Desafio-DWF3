@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS alumno (
 CREATE TABLE IF NOT EXISTS alumno_materia (
                                 id_alumno BIGINT,
                                 id_materia BIGINT,
+                                calificacion DOUBLE DEFAULT NULL,
                                 PRIMARY KEY (id_alumno, id_materia),
                                 FOREIGN KEY (id_alumno) REFERENCES alumno(id),
                                 FOREIGN KEY (id_materia) REFERENCES materia(id)

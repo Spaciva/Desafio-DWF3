@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWF Desafío 2 - Sistema de Gestión Académica</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Auth Container (Login/Register) -->
+    <div id="auth-container" class="auth-container">
+        <div class="auth-box">
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-tab="login">Iniciar Sesión</button>
+                <button class="tab-btn" data-tab="register">Registrarse</button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-tab" class="tab-content active">
+                <h2>Iniciar Sesión</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-username">Usuario:</label>
+                        <input type="text" id="login-username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Contraseña:</label>
+                        <input type="password" id="login-password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ingresar</button>
+                    <p class="info-text">Demo: usuario: <strong>admin</strong>, contraseña: <strong>admin123</strong></p>
+                </form>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-tab" class="tab-content">
+                <h2>Crear Cuenta</h2>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="register-username">Usuario:</label>
+                        <input type="text" id="register-username" name="username" required minlength="3">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Contraseña:</label>
+                        <input type="password" id="register-password" name="password" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Registrarse</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app-container" class="app-container" style="display: none;">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">📚 Sistema Académico DWF</h1>
+                <div class="user-info">
+                    <span id="current-user"></span>
+                    <button id="logout-btn" class="btn btn-secondary">Cerrar Sesión</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <nav class="nav-menu">
+                <button class="nav-btn active" data-section="dashboard">📊 Dashboard</button>
+                <button class="nav-btn" data-section="alumnos">👨‍🎓 Alumnos</button>
+                <button class="nav-btn" data-section="profesores">👨‍🏫 Profesores</button>
+                <button class="nav-btn" data-section="materias">📖 Materias</button>
+                <button class="nav-btn" data-section="notas">📝 Notas</button>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <h2>Dashboard</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-alumnos">0</div>
+                        <div class="stat-label">Alumnos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-profesores">0</div>
+                        <div class="stat-label">Profesores</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-materias">0</div>
+                        <div class="stat-label">Materias</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alumnos Section -->
+            <section id="alumnos" class="section">
+                <div class="section-header">
+                    <h2>Gestión de Alumnos</h2>
+                    <button class="btn btn-primary" id="add-alumno-btn">+ Nuevo Alumno</button>
+                </div>
+                <div class="table-container">
+                    <table id="alumnos-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Profesores Section -->
+            <section id="profesores" class="section">
+                <div class="section-header">
+                    <h2>Gestión de Profesores</h2>
+                    <button class="btn btn-primary" id="add-profesor-btn">+ Nuevo Profesor</button>
+                </div>
+                <div class="table-container">
+                    <table id="profesores-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Materias Section -->
+            <section id="materias" class="section">
+                <div class="section-header">
+                    <h2>Gestión de Materias</h2>
+                    <button class="btn btn-primary" id="add-materia-btn">+ Nueva Materia</button>
+                </div>
+                <div class="table-container">
+                    <table id="materias-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Profesor</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Notas Section -->
+            <section id="notas" class="section">
+                <div class="section-header">
+                    <h2>Gestión de Notas</h2>
+                    <button class="btn btn-primary" id="add-nota-btn">+ Nueva Nota</button>
+                </div>
+                <div class="table-container">
+                    <table id="notas-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID Alumno</th>
+                                <th>Alumno</th>
+                                <th>Materia</th>
+                                <th>Calificación</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modal-title">Nuevo Registro</h2>
+            <form id="modal-form">
+                <div id="modal-body"></div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" id="close-modal-btn">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

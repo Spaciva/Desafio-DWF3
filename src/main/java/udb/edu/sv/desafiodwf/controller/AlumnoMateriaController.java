@@ -8,9 +8,11 @@ import udb.edu.sv.desafiodwf.domain.AlumnoMateriaId;
 import udb.edu.sv.desafiodwf.service.AlumnoMateriaService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/alumno-materia")
+@CrossOrigin(origins = "*")
 public class AlumnoMateriaController {
 
     private final AlumnoMateriaService alumnoMateriaService;
@@ -35,6 +37,23 @@ public class AlumnoMateriaController {
     @PostMapping
     public AlumnoMateria create(@Valid @RequestBody AlumnoMateria alumnoMateria) {
         return alumnoMateriaService.save(alumnoMateria);
+    }
+
+    @PutMapping("/{idAlumno}/{idMateria}")
+    public ResponseEntity<AlumnoMateria> update(@PathVariable Long idAlumno, @PathVariable Long idMateria,
+                                                 @RequestBody Map<String, Object> updates) {
+        AlumnoMateriaId id = new AlumnoMateriaId(idAlumno, idMateria);
+        return alumnoMateriaService.findById(id)
+                .map(existing -> {
+                    if (updates.containsKey("calificacion")) {
+                        Object cal = updates.get("calificacion");
+                        if (cal instanceof Number) {
+                            existing.setCalificacion(((Number) cal).doubleValue());
+                        }
+                    }
+                    return ResponseEntity.ok(alumnoMateriaService.save(existing));
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{idAlumno}/{idMateria}")

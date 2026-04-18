@@ -1,0 +1,21 @@
+<!-- Archivo de configuración para el frontend -->
+<!-- Guarda esta configuración en un archivo externo para facilitar cambios -->
+
+<!-- Este archivo es opcional y puede ser utilizado para centralizar la configuración -->
+
+<!-- 
+CAMBIAR LA URL DEL API:
+
+Si necesitas cambiar la URL del API (por ejemplo, si el backend está en otro servidor):
+
+1. Abre el archivo: frontend/js/api.js
+2. Busca esta línea: const API_BASE_URL = 'http://localhost:8081/api';
+3. Cambia 'http://localhost:8081' por la URL de tu servidor
+
+Ejemplos:
+- Servidor local: const API_BASE_URL = 'http://localhost:8081/api';
+- Servidor remoto: const API_BASE_URL = 'http://servidor.com:8081/api';
+- HTTPS: const API_BASE_URL = 'https://servidor.com/api';
+
+Si el backend no está en el mismo dominio, asegúrate de que CORS esté habilitado en application.properties
+-->
