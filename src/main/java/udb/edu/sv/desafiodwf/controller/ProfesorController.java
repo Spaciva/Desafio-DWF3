@@ -1,9 +1,10 @@
 package udb.edu.sv.desafiodwf.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import udb.edu.sv.desafiodwf.domain.Profesor;
-import udb.edu.sv.desafiodwf.repository.ProfesorRepository;
+import udb.edu.sv.desafiodwf.service.ProfesorService;
 
 import java.util.List;
 
@@ -11,46 +12,46 @@ import java.util.List;
 @RequestMapping("/api/profesores")
 public class ProfesorController {
 
-    private final ProfesorRepository profesorRepository;
+    private final ProfesorService profesorService;
 
-    public ProfesorController(ProfesorRepository profesorRepository) {
-        this.profesorRepository = profesorRepository;
+    public ProfesorController(ProfesorService profesorService) {
+        this.profesorService = profesorService;
     }
 
     @GetMapping
     public List<Profesor> getAll() {
-        return profesorRepository.findAll();
+        return profesorService.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Profesor> getById(@PathVariable Long id) {
-        return profesorRepository.findById(id)
+        return profesorService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Profesor create(@RequestBody Profesor profesor) {
-        return profesorRepository.save(profesor);
+    public Profesor create(@Valid @RequestBody Profesor profesor) {
+        return profesorService.save(profesor);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Profesor> update(@PathVariable Long id, @RequestBody Profesor profesor) {
-        return profesorRepository.findById(id)
+    public ResponseEntity<Profesor> update(@PathVariable Long id, @Valid @RequestBody Profesor profesor) {
+        return profesorService.findById(id)
                 .map(existing -> {
                     existing.setNombre(profesor.getNombre());
-                    return ResponseEntity.ok(profesorRepository.save(existing));
+                    return ResponseEntity.ok(profesorService.save(existing));
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        return profesorRepository.findById(id)
+        return profesorService.findById(id)
                 .map(existing -> {
-                    profesorRepository.delete(existing);
+                    profesorService.delete(existing);
                     return ResponseEntity.noContent().<Void>build();
                 })
-                .orElse(ResponseEntity.notFound().<Void>build()); // Agrega <Void> aquí
+                .orElse(ResponseEntity.notFound().<Void>build());
     }
 }

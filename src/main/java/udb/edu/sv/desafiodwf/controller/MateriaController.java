@@ -1,9 +1,10 @@
 package udb.edu.sv.desafiodwf.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import udb.edu.sv.desafiodwf.domain.Materia;
-import udb.edu.sv.desafiodwf.repository.MateriaRepository;
+import udb.edu.sv.desafiodwf.service.MateriaService;
 
 import java.util.List;
 
@@ -11,48 +12,47 @@ import java.util.List;
 @RequestMapping("/api/materias")
 public class MateriaController {
 
-    private final MateriaRepository materiaRepository;
+    private final MateriaService materiaService;
 
-    public MateriaController(MateriaRepository materiaRepository) {
-        this.materiaRepository = materiaRepository;
+    public MateriaController(MateriaService materiaService) {
+        this.materiaService = materiaService;
     }
 
     @GetMapping
     public List<Materia> getAll() {
-        return materiaRepository.findAll();
+        return materiaService.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Materia> getById(@PathVariable Long id) {
-        return materiaRepository.findById(id)
+        return materiaService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Materia create(@RequestBody Materia materia) {
-        return materiaRepository.save(materia);
+    public Materia create(@Valid @RequestBody Materia materia) {
+        return materiaService.save(materia);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Materia> update(@PathVariable Long id, @RequestBody Materia materia) {
-        return materiaRepository.findById(id)
+    public ResponseEntity<Materia> update(@PathVariable Long id, @Valid @RequestBody Materia materia) {
+        return materiaService.findById(id)
                 .map(existing -> {
                     existing.setNombre(materia.getNombre());
                     existing.setProfesor(materia.getProfesor());
-                    return ResponseEntity.ok(materiaRepository.save(existing));
+                    return ResponseEntity.ok(materiaService.save(existing));
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        return materiaRepository.findById(id)
+        return materiaService.findById(id)
                 .map(existing -> {
-                    materiaRepository.delete(existing);
-                    return ResponseEntity.noContent().<Void>build(); // aquí forzamos Void
+                    materiaService.delete(existing);
+                    return ResponseEntity.noContent().<Void>build();
                 })
-                .orElse(ResponseEntity.notFound().<Void>build());   // aquí también
+                .orElse(ResponseEntity.notFound().<Void>build());
     }
-
 }

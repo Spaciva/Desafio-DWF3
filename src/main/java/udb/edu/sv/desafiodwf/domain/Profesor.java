@@ -1,6 +1,8 @@
 package udb.edu.sv.desafiodwf.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 
 @Entity
@@ -12,6 +14,8 @@ public class Profesor {
     private Long id;
 
     @Column(nullable = false)
+    @NotBlank
+    @Size(max = 100)
     private String nombre;
 
     public Profesor() {}
